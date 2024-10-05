@@ -7,10 +7,11 @@ import { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 const NavBar = () => {
-    const {amount, setAmount} = useContext(scrollEffect)
+    const {amount, setAmount} = useContext(scrollEffect)!
     const [slideAmount, setSlideAmount] = useState(0)
     const [isShowMenu, setIsShowMenu] = useState(false)
     const [animateAmout, setAnimateAmount] = useState(0)
+
 
     useEffect(() => {
         if (isShowMenu === true) {

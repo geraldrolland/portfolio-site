@@ -29,7 +29,7 @@ import git from "../src/assets/image/git.png"
 import Project from "./components/Project";
 import AboutUs from "./components/AboutUs";
 import ContactMe from "./components/ContactMe";
-import { createPortal } from "react-dom";
+
 type scrollAmount = {
   amount: number,
   setAmount: (amount: number) => void,
@@ -38,13 +38,11 @@ type scrollAmount = {
 
 
 
-export const scrollEffect = React.createContext<null | scrollAmount>(null)
+export const scrollEffect = React.createContext<scrollAmount | null>(null)
 
 function App() {
   const [amount, setAmount] = useState(0)
   const [isAnimate, setIsAnimate] = useState(false)
-  const [isDisableIntersection, setIsDisableIntersection] = useState(false)
-  const [obj, setObj] = useState< null | IntersectionObserver >(null)
 
   useEffect(() => {
     document.body.classList.add("bg-gray-950")
@@ -70,7 +68,6 @@ function App() {
     const targetLists = document.getElementsByClassName("targets")
     const observer = new IntersectionObserver(entries => {
       entries.forEach((entry) => {
-        if (!isDisableIntersection) {
           console.log("error")
           if (entry.isIntersecting && entry.target.id === "Home" ) {
             setAmount(0)
@@ -89,43 +86,33 @@ function App() {
           else if (entry.isIntersecting && entry.target.id === "contact-me") {
             setAmount(561)
           }
-        }
       })
     }, {
       threshold: .25,
     })
 
     const arr = Array.from(targetLists)
-    setObj(observer)
-    if (isDisableIntersection === false) {
       arr?.forEach(element => {
         observer.observe(element)
       });
-    } else {
-      observer.disconnect()
-    }
 
-  }, [isDisableIntersection])
+  }, [])
 
   useEffect(() => {
     if(amount === 0) {
-      obj?.disconnect()
       document.querySelector("#Home")!.scrollIntoView({behavior: "smooth", block: "start"})
     }
 
     else if(amount === 185) {
-      obj?.disconnect()
       document.querySelector("#project")!.scrollIntoView({behavior: "smooth", block: "start"})
     }
 
     else if (amount === 374) {
-      obj?.disconnect()
       document.querySelector("#about-me")!.scrollIntoView({behavior: "smooth", block: "start"})
 
     }
 
     else if (amount === 561) {
-      obj?.disconnect()
       document.querySelector("#contact-me")!.scrollIntoView({behavior: "smooth", block: "start"})
     }
 
@@ -138,7 +125,6 @@ function App() {
     <div  id="Home" className="w-[100%]  targets md:h-[1600]  h-[1850px] md:flex justify-center items-center">
       <img className="w-[100%]   object-cover  lg:object-fill h-[100%] opacity-40" src={pic} alt="" />
       <div   className=" md:max-w-[85%] lg:w-[55%] mt-10   w-[100%]  overflow-hidden h-[1750px] md:h-[1600px]  absolute lg:top-[20px] top-[60px]  z-10 ">
-
         <div id="container" className="w-[100%] flex-wrap overflow-hidden mb-14 flex  md:justify-between md:flex-col lg:flex-row   items-center md:h-[650px]  lg:h-[800px]  h-[700px] md:mb-24 lg:mb-0 mt-8 md:mt-2 lg:mt-0">
         <motion.img
           animate={{
